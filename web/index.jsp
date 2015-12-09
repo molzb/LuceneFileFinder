@@ -27,7 +27,12 @@
         <div id="container">
 			<div id="autoHeight">
 				<h1>Lucene File Finder</h1>
-				<p>This little tool uses Lucene to search through your hard drive.</p>
+				<p>Sample web app, where you can use the Lucene API to find files on a hard disk.<br/>
+					The files on the hard disk has been indexed before by Lucene to enable fast searches.<br/><br/>
+					Don't expect it to behave exactly like Windows Search, when it comes to jokers and wildcards.<br/>
+					This webapp is just to <b>demonstrate Lucene searches</b>.<br/><br/>
+					Download the sources <a href="">here</a> (as a Netbeans project).
+				</p>
 				<table class="fileTableHead">
 					<thead>
 						<tr>
