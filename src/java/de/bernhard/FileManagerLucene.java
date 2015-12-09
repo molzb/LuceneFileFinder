@@ -34,7 +34,7 @@ public class FileManagerLucene {
 	Directory index;
 	StandardAnalyzer analyzer;
 	IndexWriter indexWriter;
-	String indexDir = "C:/Users/Laptop/Documents/NetBeansProjects/LuceneFileFinder/index";
+	String indexDir = "/root/tomcat8/webapps/LuceneFileFinder/index";
 	public String indexedDir = "/";
 	public String term;
 	private static final int HITS_PER_PAGE = 1000;
@@ -46,27 +46,6 @@ public class FileManagerLucene {
 			FIELD_DIR = "dir",
 			FIELD_HIDDEN = "hidden";
 
-	public static void main(String[] args) throws IOException, ParseException {
-		FileManagerLucene fm = new FileManagerLucene();
-		fm.createIndex(fm.indexedDir);
-//		fm.search(FIELD_NAME, "hosts");
-		List<FileModel> res = fm.searchTerm(String.format("+%s:host -%s:HOSTNAME.EXE", FIELD_NAME, FIELD_NAME)); // ok
-		System.out.println("res=" + res.toString().replaceAll("\\),", "\\),\n"));
-//		fm.searchTerm("+name:ab +dir:1");
-//		fm.searchTerm("name:System* AND size:[0001111111 TO 0009111111]");
-//		List<FileModel> res = fm.searchTerm(FIELD_NAME + ":DataLayer"); // ok
-//		System.out.println("JSON=" + fm.toJson(res));
-//		List<FileModel> res2 = fm.searchTerm(FIELD_NAME + ":hostname*");	// ok
-//		System.out.println("JSON=" + fm.toJson(res2));
-//		fm.searchTerm(FIELD_SIZE + ":[824 TO 825]");	// FAIL, weil String-Vergleich, aber Int-Feld
-//		fm.searchTerm(String.format("%s:[%s TO %s]", FIELD_SIZE_STR, fm.padTo10(824), fm.padTo10(825)));	// ok
-//		fm.searchTerm(FIELD_HIDDEN + ":1");	// ok
-//		fm.searchTerm(FIELD_NAME + ":assembly AND " + FIELD_DIR + ":1");	// ok
-//		fm.searchNumericRange(FIELD_SIZE, 150000000, 1234567890);	// ok
-//		fm.searchNumericRange(FIELD_DATE_MODIFIED, new Date(110, 10, 21).getTime(), new Date(110,10,22).getTime());
-//		fm.searchTerm(FIELD_DIR + ":0");	// FAIL
-	}
-	
 	public FileManagerLucene() throws IOException {
 		analyzer = new StandardAnalyzer();
 		if (!new File(indexDir).exists()) {
@@ -97,7 +76,7 @@ public class FileManagerLucene {
 		}
 		IndexWriterConfig config = new IndexWriterConfig(analyzer);
 		indexWriter = new IndexWriter(index, config);
-		showFiles(new File(path).listFiles());
+		walkThroughDirectories(new File(path).listFiles());
 		indexWriter.close();
 	}
 
@@ -141,14 +120,14 @@ public class FileManagerLucene {
 		return fms;
 	}
 
-	public void showFiles(File[] files) throws IOException {
+	public void walkThroughDirectories(File[] files) throws IOException {
 		if (files == null) {
 			return;
 		}
 		for (File file : files) {
 			if (file.isDirectory()) {
 				addDoc(indexWriter, file);
-				showFiles(file.listFiles());
+				walkThroughDirectories(file.listFiles());
 			} else {
 				addDoc(indexWriter, file);
 			}
