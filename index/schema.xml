@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<schema name="fileMan" version="1.5">
+	<!-- field name="id" type="string" indexed="true" stored="true" required="true" multiValued="false" /-->         
+	<field name="name" 		type="text-general" indexed="true" stored="true" multiValued="false"/>
+	<field name="path" 		type="string" indexed="true" stored="true" multiValued="false"/>
+	<field name="size" 		type="string" indexed="true" stored="true" multiValued="false"/>
+	<field name="modified" 	type="string" indexed="true" stored="true" multiValued="false"/>
+	<field name="dir" 		type="string" indexed="true" stored="true" multiValued="false"/>
+	<field name="hidden" 	type="string" indexed="true" stored="true" multiValued="false"/>
+
+	<fieldType name="text_general" class="solr.TextField" positionIncrementGap="100">
+		<analyzer type="index">
+			<tokenizer class="solr.StandardTokenizerFactory"/>
+		</analyzer>
+	</fieldType>
+
+	<!-- Field to use to determine and enforce document uniqueness. 
+      Unless this field is marked with required="false", it will be a required field -->
+	<uniqueKey>id</uniqueKey>
+	<!-- The StrField type is not analyzed, but indexed/stored verbatim.
+       It supports doc values but in that case the field needs to be
+       single-valued and either required or have a default value.-->
+	<fieldType name="string" class="solr.StrField" sortMissingLast="true" />
+	<fieldType name="boolean" class="solr.BoolField" sortMissingLast="true"/>
+
+	<!--
+      Default numeric field types. For faster range queries, consider the tint/tfloat/tlong/tdouble types.
+      These fields support doc values, but they require the field to be
+      single-valued and either be required or have a default value.
+    -->
+	<fieldType name="int" class="solr.TrieIntField" precisionStep="0" positionIncrementGap="0"/>
+	<fieldType name="long" class="solr.TrieLongField" precisionStep="0" positionIncrementGap="0"/>
+	<fieldType name="double" class="solr.TrieDoubleField" precisionStep="0" positionIncrementGap="0"/>
+	<fieldType name="date" class="solr.TrieDateField" precisionStep="0" positionIncrementGap="0"/>
+</schema>
