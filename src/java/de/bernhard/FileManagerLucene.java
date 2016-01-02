@@ -31,13 +31,15 @@ import org.codehaus.jackson.map.ObjectMapper;
 public class FileManagerLucene {
 
 	private static final Logger LOG = Logger.getLogger(FileManagerLucene.class.getName());
-	Directory index;
-	StandardAnalyzer analyzer;
-	IndexWriter indexWriter;
-	String indexDir = "/root/tomcat8/webapps/LuceneFileFinder/index";
+	private static final int HITS_PER_PAGE = 1000;
+	
+	private final Directory index;
+	private final StandardAnalyzer analyzer;
+	private IndexWriter indexWriter;
+	private final String indexDir = "/usr/local/tomcat8/webapps/LuceneFileFinder/index";
+	
 	public String indexedDir = "/";
 	public String term;
-	private static final int HITS_PER_PAGE = 1000;
 	public int numDocs = 0;
 	public static final String FIELD_NAME = "name",
 			FIELD_PATH = "path",
